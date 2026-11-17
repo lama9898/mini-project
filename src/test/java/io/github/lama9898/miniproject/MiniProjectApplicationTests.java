@@ -1,4 +1,4 @@
-package io.github.lama9898.mini_project;
+package io.github.lama9898.miniproject;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
