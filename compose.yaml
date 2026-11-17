@@ -1,0 +1,24 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    # maria db 11.4 LTS 가 최근에 나온 12.3과 보장기간이 같음. 안정화된 11.4 버전 선택
+    container_name: mini-project
+    environment:
+      MARIADB_DATABASE: mediocre
+      MARIADB_USER: admin
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Set DB_ROOT_PASSWORD in .env}
+      # {DB_PASSWORD} 대신 위처럼 쓴 이유 : 변수가 비었을 때 Compose가 바로 에러를 발생시켜서 확인 할 수 있음
+    ports:
+      - "127.0.0.1:3307:3306"
+      # 현재 PC에서만 접속 가능하도록 설정
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh","--connect","--innodb_initialized"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  mariadb_data:
